@@ -34,18 +34,57 @@ export default function ProfileEdit() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const profilePhotoRef = useRef<HTMLInputElement>(null);
 
-    const savedData = JSON.parse(localStorage.getItem("profileData") || "{}");
+    const defaultAbout = "Tell your potential buyers about yourself...\nUse emojis to make it fun! ✨";
 
-    const [fullName, setFullName] = useState(savedData.fullName || "Sarah Mitchell");
-    const [username, setUsername] = useState(savedData.username || "sarahcreates");
-    const [email, setEmail] = useState(savedData.email || "onlywordz.com@sarahcreates");
-    const [phone, setPhone] = useState(savedData.phone || "+1 (555) 123-4567");
-    const [location, setLocation] = useState(savedData.location || "City, Country");
-    const [aboutMe, setAboutMe] = useState(savedData.aboutMe || "Tell your potential buyers about yourself...\nUse emojis to make it fun! ✨");
-    const [activeSocials, setActiveSocials] = useState<string[]>(savedData.activeSocials || ["instagram"]);
-    const [socialLinks, setSocialLinks] = useState<Record<string, string>>(savedData.socialLinks || { instagram: "", tiktok: "", twitter: "", youtube: "" });
-    const [photos, setPhotos] = useState<string[]>(savedData.photos || []);
-    const [profilePhoto, setProfilePhoto] = useState(savedData.profilePhoto || "/images/img (2).png");
+    const readSaved = (): Record<string, unknown> => {
+        if (typeof window === "undefined") return {};
+        try {
+            return JSON.parse(localStorage.getItem("profileData") || "{}");
+        } catch {
+            return {};
+        }
+    };
+
+    const [fullName, setFullName] = useState<string>(() => {
+        const s = readSaved();
+        return typeof s.fullName === "string" ? s.fullName : "Sarah Mitchell";
+    });
+    const [username, setUsername] = useState<string>(() => {
+        const s = readSaved();
+        return typeof s.username === "string" ? s.username : "sarahcreates";
+    });
+    const [email, setEmail] = useState<string>(() => {
+        const s = readSaved();
+        return typeof s.email === "string" ? s.email : "onlywordz.com@sarahcreates";
+    });
+    const [phone, setPhone] = useState<string>(() => {
+        const s = readSaved();
+        return typeof s.phone === "string" ? s.phone : "+1 (555) 123-4567";
+    });
+    const [location, setLocation] = useState<string>(() => {
+        const s = readSaved();
+        return typeof s.location === "string" ? s.location : "City, Country";
+    });
+    const [aboutMe, setAboutMe] = useState<string>(() => {
+        const s = readSaved();
+        return typeof s.aboutMe === "string" ? s.aboutMe : defaultAbout;
+    });
+    const [activeSocials, setActiveSocials] = useState<string[]>(() => {
+        const s = readSaved();
+        return Array.isArray(s.activeSocials) ? s.activeSocials : ["instagram"];
+    });
+    const [socialLinks, setSocialLinks] = useState<Record<string, string>>(() => {
+        const s = readSaved();
+        return typeof s.socialLinks === "object" && s.socialLinks !== null ? (s.socialLinks as Record<string, string>) : { instagram: "", tiktok: "", twitter: "", youtube: "" };
+    });
+    const [photos, setPhotos] = useState<string[]>(() => {
+        const s = readSaved();
+        return Array.isArray(s.photos) ? s.photos : [];
+    });
+    const [profilePhoto, setProfilePhoto] = useState<string>(() => {
+        const s = readSaved();
+        return typeof s.profilePhoto === "string" ? s.profilePhoto : "/images/img (2).png";
+    });
 
     const toggleSocial = (id: string) => {
         if (activeSocials.includes(id)) {
