@@ -74,7 +74,7 @@ const primaryMessages: Message[] = [
 
 export default function Chats() {
   const [activeTab, setActiveTab] = useState<"primary" | "requests">("primary");
-
+  
   return (
     <div className="min-h-screen bg-[#F8F7F9] flex flex-col">
       <header className="w-full h-[148px] bg-linear-to-b from-[rgba(255,255,255,0.80)] to-[rgba(251,251,251,0.80)] backdrop-blur-[7.5px] border-b border-[#CDD5E1] shadow-[0_5px_12px_0_rgba(0,0,0,0.10)]">
