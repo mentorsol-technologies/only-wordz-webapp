@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+
+@import "tailwindcss";
+
+:root {
+  --background: #fafafa;
+  --foreground: #171717;
+  --primary: #ff69b4;
+  --primary-light: #ffcfe6;
+  --primary-dark: #e65c9e;
+  --secondary: #d0d0d0;
+  --accent: #8a2be2;
+  --accent-light: #e0d0f5;
+  --text-muted: #666666;
+  --border: #e0e0e0;
+  --card-bg: #ffffff;
+  --shadow: rgba(0, 0, 0, 0.05);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: "Arial";
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --primary: #ff69b4;
+    --primary-light: #331a2b;
+    --primary-dark: #e65c9e;
+    --secondary: #404040;
+    --accent: #bb86fc;
+    --accent-light: #2a1a30;
+    --text-muted: #aaaaaa;
+    --border: #333333;
+    --card-bg: #121212;
+    --shadow: rgba(0, 0, 0, 0.3);
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+/* Chrome/Safari autofill fix */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color: #484a4c !important;
+  caret-color: #484a4c !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+.font-roboto {
+  font-family: "Roboto", -apple-system, Roboto, Helvetica, sans-serif;
+}
+.font-ubuntu {
+  font-family: "Ubuntu", sans-serif;
+}
