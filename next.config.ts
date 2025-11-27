@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     domains: ["api.builder.io"],
   },
   reactCompiler: true,
+  output: 'export',
 };
 
 export default nextConfig;
