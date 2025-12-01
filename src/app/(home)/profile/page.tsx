@@ -2,7 +2,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { MoreVertical, Share2, Pencil } from "lucide-react";
+import { Share2, Pencil } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import NavigateBack from "@/components/NavigateBack";
 import { BottomNav } from "@/components/BottomNav/Index";
@@ -82,12 +82,12 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-[#F8F7F9] flex flex-col">
       <header className="bg-white border-b border-[#C1BDDB] shadow-sm sticky top-0 z-50">
-        <div className="max-w-[640px] mx-auto px-4 sm:px-0 py-4 flex items-center justify-between">
+        <div className="max-w-[640px] mx-auto px-4 sm:px-0 py-4 flex items-center justify-start">
           <NavigateBack />
-          <h1 className="text-lg font-medium text-black">@{username}</h1>
-          <button className="p-2 hover:bg-[#F8F7F9] rounded-lg transition-colors cursor-pointer">
+          <h1 className="text-lg font-medium text-black text-center mx-auto">@{username}</h1>
+          {/* <button className="p-2 hover:bg-[#F8F7F9] rounded-lg transition-colors cursor-pointer">
             <MoreVertical className="w-6 h-6 text-[#303A2B]" />
-          </button>
+          </button> */}
         </div>
       </header>
 

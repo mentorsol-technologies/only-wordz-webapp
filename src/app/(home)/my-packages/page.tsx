@@ -63,7 +63,7 @@ export default function Index() {
   const [activeFilter, setActiveFilter] = useState<FilterType>("all");
   const router = useRouter()
   return (
-    <div className="min-h-screen pb-24">
+    <div className="min-h-screen bg-[#F8F7F9] pb-24">
       <Header />
       <main className="max-w-[640px] mx-auto px-4 sm:px-0 pt-6">
         <div className="bg-white/90 backdrop-blur-sm border-b border-[#CDD5E1] sticky top-0 z-40">

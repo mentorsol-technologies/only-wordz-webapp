@@ -1,7 +1,17 @@
-import { Search, Menu } from "lucide-react";
+'use client'
+import { Search } from "lucide-react";
 import Image from "next/image";
+import { useState, useRef, useEffect } from "react";
 
 export function Header() {
+    const [showSearch, setShowSearch] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+        if (showSearch) {
+            inputRef.current?.focus();
+        }
+    }, [showSearch]);
+
     return (
         <header className="w-full bg-white border-b border-[#C1BDDB] shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
             <div className="max-w-[640px] mx-auto px-4 sm:px-0 py-4 flex items-center justify-between gap-4">
@@ -19,13 +29,23 @@ export function Header() {
                 <div className="shrink-0 hidden sm:block">
                     <Image src={'/images/Logo.png'} width={121} height={36} alt='Logo' />
                 </div>
-                <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2.5 py-3 px-3 cursor-pointer rounded-lg border border-[rgba(193,189,219,0.5)] bg-[#F8F7F9]">
-                        <Search className="w-5 h-5 text-gray-darker" />
-                    </button>
-                    <button className="flex items-center gap-2.5 py-3 px-3 cursor-pointer rounded-lg border border-[rgba(193,189,219,0.5)] bg-[#F8F7F9]">
-                        <Menu className="w-5 h-5 text-gray-darker" />
-                    </button>
+
+                <div className="flex items-center gap-3 relative">
+                    {showSearch ? (
+                        <input
+                            ref={inputRef}
+                            type="text"
+                            placeholder="Search..."
+                            className="w-full px-4 py-2.5 rounded-lg bg-[#F3F3F5] border border-[rgba(193,189,219,0.5)] text-sm text-[#717182] focus:border-[#FF99C9] focus:outline-none"
+                        />
+                    ) : (
+                        <button
+                            onClick={() => setShowSearch(true)}
+                            className="flex items-center gap-2.5 py-3 px-3 cursor-pointer rounded-lg border border-[rgba(193,189,219,0.5)] bg-[#F8F7F9]"
+                        >
+                            <Search className="w-5 h-5 text-gray-darker" />
+                        </button>
+                    )}
                 </div>
             </div>
         </header>
