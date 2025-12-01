@@ -6,8 +6,8 @@ const navItems = [
     { id: "profile", label: "Profile", icon: User, path: "/profile" },
     { id: "chats", label: "Chats", icon: MessageCircle, path: "/chats" },
     { id: "packages", label: "My Packages", icon: Grid2x2, path: "/my-packages" },
-    { id: "explore", label: "Explore Packages", icon: Grid2x2, path: "" },
-    { id: "settings", label: "Settings", icon: Settings, path: "" },
+    { id: "explore", label: "Explore Packages", icon: Grid2x2, path: "/explore-packages" },
+    { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
 ];
 
 export function BottomNav() {

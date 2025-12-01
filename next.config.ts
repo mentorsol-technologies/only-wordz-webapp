@@ -3,10 +3,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["api.builder.io"],
+    unoptimized: true,
   },
   reactCompiler: true,
-  output: 'export',
+  // output: "export",
 };
 
 export default nextConfig;

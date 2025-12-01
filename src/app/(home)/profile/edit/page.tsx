@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
-import { MoreVertical, Camera, X, Plus, User, Mail, Phone, MapPin } from "lucide-react";
+import { Camera, X, Plus, User, Mail, Phone, MapPin } from "lucide-react";
 import NavigateBack from "@/components/NavigateBack";
 import Image from "next/image";
 
@@ -129,12 +129,12 @@ export default function ProfileEdit() {
     return (
         <div className="min-h-screen bg-[#F8F7F9] flex flex-col">
             <header className="bg-white border-b border-[#C1BDDB] shadow-sm sticky top-0 z-50">
-                <div className="max-w-[640px] mx-auto px-4 sm:px-0 py-4 flex items-center justify-between">
+                <div className="max-w-[640px] mx-auto px-4 sm:px-0 py-4 flex items-center justify-start">
                     <NavigateBack />
-                    <h1 className="text-lg font-medium text-black">@{username}</h1>
-                    <button className="flex items-center justify-center w-10 h-10">
+                    <h1 className="text-lg font-medium text-black text-center mx-auto">@{username}</h1>
+                    {/* <button className="flex items-center justify-center w-10 h-10">
                         <MoreVertical className="w-6 h-6 text-[#303A2B]" strokeWidth={2} />
-                    </button>
+                    </button> */}
                 </div>
             </header>
 
@@ -202,11 +202,9 @@ export default function ProfileEdit() {
                         )}
                     </div>
 
-                    {/* Basic Info */}
                     <div className="bg-white rounded-[14px] border border-[rgba(0,0,0,0.10)] p-6 flex flex-col gap-10">
                         <h3 className="text-base text-[#0A0A0A]">Basic Information</h3>
                         <div className="flex flex-col gap-4">
-                            {/* Full Name */}
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm text-[#0A0A0A]">Full Name</label>
                                 <div className="relative">
@@ -219,7 +217,6 @@ export default function ProfileEdit() {
                                     />
                                 </div>
                             </div>
-                            {/* Username */}
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm text-[#0A0A0A]">Username</label>
                                 <div className="relative">
@@ -232,7 +229,6 @@ export default function ProfileEdit() {
                                     />
                                 </div>
                             </div>
-                            {/* Email */}
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm text-[#0A0A0A]">Email Address</label>
                                 <div className="relative">
@@ -245,7 +241,6 @@ export default function ProfileEdit() {
                                     />
                                 </div>
                             </div>
-                            {/* Phone */}
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm text-[#0A0A0A]">Phone Number</label>
                                 <div className="relative">
@@ -258,7 +253,6 @@ export default function ProfileEdit() {
                                     />
                                 </div>
                             </div>
-                            {/* Location */}
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm text-[#0A0A0A]">Location</label>
                                 <div className="relative">
@@ -274,7 +268,6 @@ export default function ProfileEdit() {
                         </div>
                     </div>
 
-                    {/* About Me */}
                     <div className="bg-white rounded-[14px] border border-[rgba(0,0,0,0.10)] p-6 flex flex-col gap-2">
                         <h3 className="text-base text-[#0A0A0A]">About Me</h3>
                         <textarea
@@ -287,7 +280,6 @@ export default function ProfileEdit() {
                         <p className="text-base text-[#6A7282]">{aboutMe.length} characters</p>
                     </div>
 
-                    {/* Photos */}
                     <div className="bg-white rounded-[14px] border border-[rgba(0,0,0,0.10)] p-6 flex flex-col gap-4">
                         <div className="flex items-center justify-between">
                             <h3 className="text-base text-[#0A0A0A]">Photos</h3>
@@ -332,7 +324,6 @@ export default function ProfileEdit() {
                         <p className="text-base text-[#6A7282]">Add up to 12 photos to showcase your work</p>
                     </div>
 
-                    {/* Actions */}
                     <div className="flex gap-3 pb-6">
                         <button onClick={handleCancel} className="flex-1 py-2 border cursor-pointer border-[rgba(0,0,0,0.10)] bg-white rounded-lg hover:bg-[#F8F7F9] transition-colors">
                             <span className="text-sm text-[#0A0A0A]">Cancel</span>
