@@ -5,6 +5,7 @@ import { PackagePurchaseDialog } from "@/components/Dialogs/PackagePurchaseDialo
 import { Header } from "@/components/Header/Header";
 import useToggle from "@/lib/hooks/useToggle";
 import { MessageSquare, Phone, Video, Clock, Zap } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const featuresIcons: any = {
     messages: MessageSquare,
@@ -15,6 +16,8 @@ const featuresIcons: any = {
 };
 
 function PackageCard({ title, subtitle, price, features, onOpenDialog }: any) {
+    const router = useRouter();
+
     return (
         <div className="bg-white border border-[#C1BDDB] rounded-2xl p-5">
             <div className="space-y-4">
@@ -48,7 +51,7 @@ function PackageCard({ title, subtitle, price, features, onOpenDialog }: any) {
                         className="flex-1 py-3.5 px-6 border-2 cursor-pointer border-[#FF99C9] text-[#FF99C9] rounded-2xl text-base font-normal hover:bg-[#FFF5FA] transition-colors">
                         What&apos;s Included
                     </button>
-                    <button className="flex-1 py-3.5 px-6 cursor-pointer bg-[#FF99C9] text-[#303A2B] rounded-2xl text-base font-normal hover:bg-[#FF99C9]/90 transition-colors shadow-[0_4px_12px_0_rgba(88,252,236,0.3)]">
+                    <button onClick={() => router.push('/new-chat')} className="flex-1 py-3.5 px-6 cursor-pointer bg-[#FF99C9] text-[#303A2B] rounded-2xl text-base font-normal hover:bg-[#FF99C9]/90 transition-colors shadow-[0_4px_12px_0_rgba(88,252,236,0.3)]">
                         Purchase Package
                     </button>
                 </div>

@@ -90,7 +90,7 @@ export default function Chats() {
             <h1 className="sm:text-lg text-[16px] font-bold italic text-[#141414] font-ubuntu">
               WordzMessenger
             </h1>
-            <button onClick={() => router.push(`/new-chat`)} className="flex items-center cursor-pointer sm:gap-2.5 gap-1 sm:px-3.5 px-2 py-1.5 bg-[#FF99C9] rounded-md">
+            <button onClick={() => router.push(`/explore-packages`)} className="flex items-center cursor-pointer sm:gap-2.5 gap-1 sm:px-3.5 px-2 py-1.5 bg-[#FF99C9] rounded-md">
               <MessageSquare className="w-5 h-5 text-[#303A2B]" strokeWidth={1.33} />
               <span className="text-base text-[#303A2B]">New Chat</span>
             </button>
