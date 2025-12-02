@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import * as z from 'zod';
+import { login as loginApi } from '@/lib/auth';
 
 const loginSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
@@ -46,10 +47,16 @@ export default function LoginPage() {
     setValue(field, value, { shouldValidate: true });
   };
 
-  const onSubmit = (data: LoginFormValues) => {
-    console.log('Login data:', data);
-    toast.success('Login successfully')
-    router.push('/my-packages');
+  const onSubmit = async (data: LoginFormValues) => {
+    try {
+      const res = await loginApi({ email: data.email, password: data.password });
+      toast.success(res?.message || 'Logged in successfully');
+      router.push('/my-packages');
+    } catch (err: unknown) {
+      console.error('Login error:', err);
+      const message = err instanceof Error ? err.message : String(err);
+      toast.error(message || 'Failed to login');
+    }
   };
 
   return (

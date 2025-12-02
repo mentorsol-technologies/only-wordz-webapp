@@ -11,6 +11,9 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { register as registerApi } from '@/lib/auth';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 const signUpSchema = z
     .object({
@@ -31,7 +34,7 @@ const signUpSchema = z
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 export default function Register() {
-    const [role] = useState<'user' | 'creator'>('user');
+    const [role] = useState<'user' | 'creator'>('creator');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formValues, setFormValues] = useState<SignUpFormValues>({
         fullName: '',
@@ -51,15 +54,26 @@ export default function Register() {
         setFormValues(prev => ({ ...prev, [field]: value }));
         setValue(field, value as any, { shouldValidate: true });
     };
-    const onSubmit = (data: SignUpFormValues) => {
+    const router = useRouter();
+    const onSubmit = async (data: SignUpFormValues) => {
         setIsSubmitting(true);
-        console.log('Sign up data:', data);
-        console.log('Role:', role);
-        // Simulate API call
-        setTimeout(() => {
+        try {
+            const payload = {
+                fullName: data.fullName,
+                email: data.email,
+                password: data.password,
+                role,
+            };
+            const res = await registerApi(payload);
+            toast.success(res?.message || 'Account created successfully');
+            router.push('/login');
+        } catch (err: unknown) {
+            console.error('Register error:', err);
+            const message = err instanceof Error ? err.message : String(err);
+            toast.error(message || 'Failed to create account');
+        } finally {
             setIsSubmitting(false);
-            // In real app: redirect or show success
-        }, 1500);
+        }
     };
 
 
