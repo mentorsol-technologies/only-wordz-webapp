@@ -57,7 +57,15 @@ const defaultPhotos = [
 ];
 
 export default function Profile() {
-  const [profileData, setProfileData] = useState<any | null>(null);
+  const [profileData, setProfileData] = useState<any>({
+    fullName: "Sarah Mitchell",
+    username: "sarahcreates",
+    email: "onlywordz.com@sarahcreates",
+    aboutMe:
+      "✨ Digital marketing expert & content creator\n💬 Love helping people grow their brands\n🎨 Creative strategy | Social media tips | Business coaching\n☕ Coffee enthusiast | 🐕 Dog mom",
+    photos: defaultPhotos,
+    activeSocials: Object.keys(defaultSocialLinks),
+  });
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter()
   useEffect(() => {
@@ -79,9 +87,6 @@ export default function Profile() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpen]);
 
-  if (!profileData) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-  }
   const {
     fullName = "Sarah Mitchell",
     username = "sarahcreates",
