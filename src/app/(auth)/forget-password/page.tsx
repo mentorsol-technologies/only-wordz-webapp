@@ -52,7 +52,7 @@ export default function ForgotPasswordPage() {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center p-4">
                 <div className="bg-white w-full max-w-md border border-black/10 rounded-[14px] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] p-6">
-                    <div className="flex justify-center mb-5 mt-1">
+                    <div className="flex justify-center mb-4 2xl:mb-5 mt-1">
                         <Image src={'/images/check.png'} width={76} height={76} alt='Check icon' />
                     </div>
 
@@ -100,22 +100,12 @@ export default function ForgotPasswordPage() {
                         </Button>
                     </div>
                 </div>
-
-                <p className="mt-5 text-center font-normal max-[376px]:text-[14px] text-[16px] leading-6 text-[#6A7282]">
-                    Need help?{' '}
-                    <Link
-                        href="#"
-                        className="font-normal max-[376px]:text-[14px] text-[16px] text-[#FF99C9] underline hover:no-underline transition-all duration-300 ease-in-out"
-                    >
-                        Contact our support team
-                    </Link>
-                </p>
             </div>
         );
     }
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-4">
-            <div className="text-center mb-8">
+            <div className="text-center mb-4 2xl:mb-8">
                 <h1 className="font-normal max-[321px]:text-xl text-2xl text-black text-center mb-2">
                     Reset Your Password
                 </h1>
@@ -125,18 +115,18 @@ export default function ForgotPasswordPage() {
             </div>
 
             <div className="bg-white w-full max-w-md border border-black/10 rounded-[14px] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.25)] p-6">
-                <div className="mb-6 pt-2 flex justify-center">
+                <div className="mb-3 2xl:mb-6 pt-2 flex justify-center">
                     <NavigateBack title="Back to Login" />
                 </div>
 
-                <h2 className="text-[16px] leading-6 pt-4 text-[#0A0A0A]">Forgot Password?</h2>
+                <h2 className="text-[16px] leading-6 pt-2 2xl:pt-4 text-[#0A0A0A]">Forgot Password?</h2>
 
                 <p className="font-sans font-normal max-[321px]:text-[14px] text-base text-[#4A5565] leading-6 my-7">
                     No worries! Enter your email address and we&apos;ll send you instructions to reset your
                     password.
                 </p>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 2xl:space-y-5">
                     <CommonInput
                         name="email"
                         label="Email Address"
@@ -159,7 +149,7 @@ export default function ForgotPasswordPage() {
                         <ArrowRight size={16} className="text-[#212121]" />
                     </Button>
 
-                    <div className="max-[321px]:mt-4 mt-6 p-4 bg-[#F9FAFB] rounded-[10px] text-center">
+                    <div className="max-[321px]:mt-4 mt-5 2xl:mt-6 p-4 bg-[#F9FAFB] rounded-[10px] text-center">
                         <p className="text-[16px] max-[321px]:text-[14px] font-bold text-[#364153]">Remember your password?</p>
                         <Link
                             href="/login"
@@ -171,9 +161,6 @@ export default function ForgotPasswordPage() {
                 </form>
             </div>
 
-            <p className="mt-5 text-center font-sans font-normal max-[321px]:text-[14px] text-[16px] leading-6 text-[#6A7282]">
-                Protected by industry-standard security measures
-            </p>
         </div>
     );
 }

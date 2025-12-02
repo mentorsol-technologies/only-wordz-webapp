@@ -5,11 +5,12 @@ import NavigateBack from "@/components/NavigateBack";
 import useToggle from "@/lib/hooks/useToggle";
 import { MessageCircle, Phone, Video, Clock, MapPin, Instagram, Twitter } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function NewOrder() {
   const toggleDecline = useToggle()
   const toggleAccept = useToggle()
-
+  const router = useRouter()
   const packageData = {
     name: "Boyfriend",
     description: "The ultimate boyfriend experience with full access and priority support.",
@@ -227,9 +228,11 @@ export default function NewOrder() {
         open={toggleAccept.isOpen}
         onOpenChange={toggleAccept.toggle}
         buyerName="Tim Anderson"
-        onAccept={
-          toggleAccept.close
-        } onCancel={toggleAccept.close}
+        onAccept={() => {
+          router.push('/new-chat'); 
+          toggleAccept.close();    
+        }}
+        onCancel={toggleAccept.close}
       />
       <DeclineOrderDialog
         open={toggleDecline.isOpen}

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Upload, MessageSquare, Phone, Video, Info, Check, ChevronDown, X } from "lucide-react";
 import NavigateBack from "@/components/NavigateBack";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FileUpload } from "@/components/FileUpload";
 import { NumericStepper } from "@/components/NumericStepper";
 import { RadioButton } from "@/components/RadioButton";
@@ -15,12 +15,15 @@ export default function CreatePackage() {
     const router = useRouter();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const searchParams = useSearchParams();
+    const mode = searchParams.get("mode");
     const [thumbnail, setThumbnail] = useState<string>("");
     const [duration, setDuration] = useState("");
     const [showDurationDropdown, setShowDurationDropdown] = useState(false);
 
     const [textMessages, setTextMessages] = useState(true);
     const [unlimitedMessages, setUnlimitedMessages] = useState(true);
+    const [customMessageCount, setCustomMessageCount] = useState("");
 
     const [voiceCalls, setVoiceCalls] = useState(true);
     const [voiceCallsCount, setVoiceCallsCount] = useState(3);
@@ -84,17 +87,11 @@ export default function CreatePackage() {
     return (
         <div className="min-h-screen">
             <header className="bg-white border-b border-[#f0eff4] shadow-[0_2px_8px_rgba(0,0,0,0.04)] sticky top-0 z-50">
-                <div className="max-w-[640px] mx-auto px-4 sm:px-0 py-4 flex items-center justify-between">
+                <div className="max-w-[640px] mx-auto px-4 sm:px-0 py-4 flex items-center justify-start">
                     <NavigateBack />
-                    <h1 className="font-roboto font-medium text-[18px] leading-7 text-black">
-                        Create Package
+                    <h1 className="font-roboto font-medium text-[18px] leading-7 text-center mx-auto text-black">
+                        {mode === "edit" ? "Edit Package" : "Create Package"}
                     </h1>
-                    <button
-                        onClick={handleSave}
-                        className="px-4 py-2 bg-[#FF99C9] cursor-pointer rounded-md hover:bg-[#FF99C9]/90 transition-colors"
-                    >
-                        <span className="text-base text-[#303A2B]">Save Draft</span>
-                    </button>
                 </div>
             </header>
 
@@ -180,7 +177,7 @@ export default function CreatePackage() {
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-3">
-                                        <MessageSquare className="w-5 h-5 text-[#303A2B" />
+                                        <MessageSquare className="w-5 h-5 text-[#303A2B]" />
                                         <span className="text-base text-[#303A2B]">Text Messages</span>
                                     </div>
                                     <ToggleSwitch
@@ -189,18 +186,38 @@ export default function CreatePackage() {
                                     />
                                 </div>
                                 {textMessages && (
-                                    <label className="flex items-center gap-3 ml-8">
-                                        <div
-                                            className={`w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${unlimitedMessages ? "bg-[#FF99C9]" : "bg-white border-2 border-gray-500"
-                                                }`}
-                                            onClick={() => setUnlimitedMessages(!unlimitedMessages)}
-                                        >
-                                            {unlimitedMessages && (
-                                                <Check className="w-5 h-5 text-[#000000]" strokeWidth={1.5} />
-                                            )}
-                                        </div>
-                                        <span className="text-base text-[#303A2B]">Unlimited messages</span>
-                                    </label>
+                                    <div className="ml-8 space-y-4">
+                                        <label className="flex items-center gap-3">
+                                            <div
+                                                className={`w-7 h-7 rounded-lg flex items-center justify-center cursor-pointer transition-colors ${unlimitedMessages
+                                                    ? "bg-[#FF99C9]"
+                                                    : "bg-white border-2 border-gray-500"
+                                                    }`}
+                                                onClick={() => setUnlimitedMessages(!unlimitedMessages)}
+                                            >
+                                                {unlimitedMessages && (
+                                                    <Check className="w-5 h-5 text-[#000000]" strokeWidth={1.5} />
+                                                )}
+                                            </div>
+                                            <span className="text-base text-[#303A2B]">Unlimited messages</span>
+                                        </label>
+
+                                        {!unlimitedMessages && (
+                                            <div>
+                                                <label className="block text-sm text-[#303A2B] mb-1">
+                                                    Enter custom message limit
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    value={customMessageCount}
+                                                    minLength={1}
+                                                    onChange={(e) => setCustomMessageCount(e.target.value)}
+                                                    placeholder="Enter number of messages"
+                                                    className="w-full px-4 py-3 border-2 border-[#C1BDDB] rounded-2xl text-base text-[#303A2B] focus:border-[#A2C7E5] focus:outline-none"
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
                                 )}
                             </div>
 

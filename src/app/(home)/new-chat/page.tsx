@@ -7,6 +7,7 @@ import useToggle from "@/lib/hooks/useToggle";
 import { PackageDetailsDialog } from "@/components/Dialogs/PackageDetailsDialog";
 import { VoiceCallDialog } from "@/components/Dialogs/VoiceCallDialog";
 import { ReportUserDialog } from "@/components/Dialogs/ReportUserDialog";
+import { callerData, packageData } from "@/lib/constant";
 
 interface Message {
   id: number;
@@ -53,21 +54,7 @@ export default function Chat() {
   const showPackageDetail = useToggle()
   const showVoiceCall = useToggle();
   const showReport = useToggle();
-  const packageData = {
-    name: "Lets get to know eachother",
-    description: "Perfect for quick conversations and getting to know each other!",
-    duration: "7 days",
-    remaining: {
-      messages: 15,
-      voiceCalls: { count: 2, minutes: 5 },
-      videoCalls: 0,
-    },
-  };
-  const callerData = {
-    name: "Tim Anderson",
-    image: "/images/Tim Anderson.jpg",
-    callDuration: "00:05",
-  };
+
   const handleSendMessage = () => {
     if (newMessage.trim()) {
       const newMsg: Message = {

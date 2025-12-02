@@ -16,14 +16,15 @@ export default function RoleSelection() {
 
     const handleContinue = () => {
         if (selectedRole) {
+            localStorage.setItem("selectedRole", selectedRole);
             router.push(`/register?role=${selectedRole}`);
         }
     };
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-4 max-w-4xl mx-auto">
-            <div className="text-center mb-10">
-                <div className="flex justify-center mb-3">
+            <div className="text-center mb-6 2xl:mb-10">
+                <div className="flex justify-center mb-2 2xl:mb-3">
                     <Image src={'/images/Logo.png'} width={197} height={58} alt="OnlyWordz Logo" />
                 </div>
                 <h1 className="text-2xl font-normal text-black mb-1 max-[321px]:text-xl">
@@ -34,7 +35,6 @@ export default function RoleSelection() {
                 </p>
             </div>
 
-            {/* Role Selection */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
                 <div
                     onClick={handleSelectUser}
@@ -82,7 +82,6 @@ export default function RoleSelection() {
                     </Button>
                 </div>
 
-                {/* Creator Card */}
                 <div
                     onClick={handleSelectCreator}
                     className={`bg-white border cursor-pointer rounded-[14px] p-6 transition-all duration-300 ease-in-out flex flex-col items-center text-center ${selectedRole === 'creator'
