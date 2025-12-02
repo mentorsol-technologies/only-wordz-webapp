@@ -1,5 +1,11 @@
 import { Clock, MessageSquare, Phone, Video, MoreVertical } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { PackageDetailsDialog } from "../Dialogs/PackageDetailsDialog";
+import useToggle from "@/lib/hooks/useToggle";
+import { packageData } from "@/lib/constant";
+import { useRouter } from "next/navigation";
+import { DeletePackageDialog } from "../Dialogs/DeletePackage";
 
 interface PackageCardProps {
     title: string;
@@ -13,6 +19,9 @@ interface PackageCardProps {
         phoneMinutes?: string;
         videoMinutes?: string;
     };
+    onBuyClick?: () => void;
+    showBuyButton?: boolean;
+    showTabButton?: boolean;
 }
 
 export function PackageCard({
@@ -23,7 +32,26 @@ export function PackageCard({
     active,
     earned,
     entitlements,
+    showBuyButton = false,
+    showTabButton = true,
+    onBuyClick,
 }: PackageCardProps) {
+    const [menuOpen, setMenuOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
+    const showPackageDetail = useToggle()
+    const deletePackage = useToggle()
+    const router = useRouter()
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setMenuOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
     return (
         <div className="bg-white rounded-2xl shadow-[0_2px_15px_0_rgba(0,0,0,0.10)] overflow-hidden">
             <div className="px-4 py-4 border-b border-[#E5E4E7] flex items-center justify-between gap-3">
@@ -44,23 +72,53 @@ export function PackageCard({
                         </div>
                     </div>
                 </div>
-                <button className="text-[#595959] hover:text-[#413f3f] cursor-pointer transition-colors shrink-0">
-                    <MoreVertical className="w-5 h-5 rotate-90" />
-                </button>
+                {showTabButton && (
+                    <button
+                        className="p-2 hover:bg-[#F8F7F9] rounded-lg transition-colors cursor-pointer relative"
+                        onClick={() => setMenuOpen(prev => !prev)}
+                    >
+                        <MoreVertical className="w-6 h-6 text-[#303A2B] rotate-90" />
+
+                        {menuOpen && (
+                            <div ref={menuRef}
+                                className="absolute right-0 mt-3 w-32 z-50 border border-[#C1BDDB] rounded-2xl overflow-hidden bg-white shadow-lg">
+                                <div
+                                    className="px-5 py-2 text-left text-base cursor-pointer hover:bg-gray-50 transition-colors"
+                                    onClick={showPackageDetail.open}
+                                >
+                                    Veiw Detail
+                                </div>
+                                <div
+                                    className="px-5 py-2 text-left text-base cursor-pointer hover:bg-gray-50 transition-colors  border-t border-[#C1BDDB]"
+                                    onClick={() => router.push(`/create-package?mode=edit&title=${encodeURIComponent(title)}`)}
+                                >
+                                    Edit
+                                </div>
+                                <div
+                                    className="px-5 py-2 text-left text-red-600 text-base cursor-pointer hover:bg-gray-50 transition-colors border-t border-[#C1BDDB]"
+                                    onClick={deletePackage.open}
+                                >
+                                    Delete
+                                </div>
+                            </div>
+
+                        )}
+                    </button>
+                )}
             </div>
 
             <div className="px-4 py-5">
-                <div className="grid grid-cols-3 gap-2.5 mb-5">
+                <div className="grid grid-cols-3 gap-1 md:gap-2.5 mb-5">
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-1.5">
                             <div className="w-6 h-6 rounded-full bg-[#EFF1F5] flex items-center justify-center">
                                 <Image src={'/images/briefcase2.png'} width={14} height={14} alt='Icon' />
                             </div>
-                            <span className="font-roboto font-normal text-[16px] leading-4 text-[#8C8C8C] align-middle">
+                            <span className="font-roboto font-normal text-sm md:text-[16px] leading-4 text-[#8C8C8C] align-middle">
                                 Price
                             </span>
                         </div>
-                        <span className="font-roboto font-normal text-[24px] leading-5 text-[#141414] align-middle">
+                        <span className="font-roboto font-normal text-[18px] md:text-[24px] leading-5 text-[#141414] align-middle">
                             ${price}
                         </span>
                     </div>
@@ -70,11 +128,11 @@ export function PackageCard({
                             <div className="w-6 h-6 rounded-full bg-[#EFF1F5] flex items-center justify-center">
                                 <Image src={'/images/clock2.png'} width={16} height={16} alt='Icon' />
                             </div>
-                            <span className="font-roboto font-normal text-[16px] leading-4 text-[#8C8C8C] align-middle">
+                            <span className="font-roboto font-normal text-sm md:text-[16px] leading-4 text-[#8C8C8C] align-middle">
                                 Active
                             </span>
                         </div>
-                        <span className="font-roboto font-normal text-[24px] leading-5 text-[#141414] align-middle">
+                        <span className="font-roboto font-normal text-[18px] md:text-[24px] leading-5 text-[#141414] align-middle">
                             {active}
                         </span>
                     </div>
@@ -84,11 +142,11 @@ export function PackageCard({
                             <div className="w-6 h-6 rounded-full bg-[#EFF1F5] flex items-center justify-center">
                                 <Image src={'/images/wallet2.png'} width={14} height={14} alt='Icon' />
                             </div>
-                            <span className="font-roboto font-normal text-[16px] leading-4 text-[#8C8C8C] align-middle">
+                            <span className="font-roboto font-normal text-sm md:text-[16px] leading-4 text-[#8C8C8C] align-middle">
                                 Earned
                             </span>
                         </div>
-                        <span className="font-roboto font-normal text-[24px] leading-5 text-[#141414] align-middle">
+                        <span className="font-roboto font-normal text-[18px] md:text-[24px] leading-5 text-[#141414] align-middle">
                             ${earned.toFixed(2)}
                         </span>
                     </div>
@@ -123,7 +181,30 @@ export function PackageCard({
                         )}
                     </div>
                 </div>
+                {showBuyButton && (
+                    <button
+                        onClick={onBuyClick}
+                        className="mt-5 w-full cursor-pointer px-4 py-2 bg-[#FF99C9] rounded-lg text-sm text-[#0A0A0A] leading-5 hover:bg-[#FF99C9]/90 transition-colors"
+                    >
+                        Buy Package
+                    </button>
+                )}
             </div>
+            <PackageDetailsDialog
+                open={showPackageDetail.isOpen}
+                onOpenChange={showPackageDetail.toggle}
+                packageData={packageData}
+                onClose={showPackageDetail.close}
+            />
+            <DeletePackageDialog
+                open={deletePackage.isOpen}
+                onOpenChange={deletePackage.toggle}
+                onCancel={deletePackage.close}
+                onConfirm={() => {
+                    console.log("Package deleted!");
+                    deletePackage.close()
+                }}
+            />
         </div>
     );
 }

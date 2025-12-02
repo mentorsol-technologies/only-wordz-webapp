@@ -1,9 +1,10 @@
 'use client'
 import { BottomNav } from "@/components/BottomNav/Index";
 import NavigateBack from "@/components/NavigateBack";
-import { Search, SlidersHorizontal, MessageSquare } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface Message {
   id: string;
@@ -23,7 +24,7 @@ const messages: Message[] = [
     name: "Brooklyn Simmons",
     message: "Hey! It's so great to hear from you, I really loved the video you uploaded the other day! Did you...",
     time: "8:12pm",
-    image: "https://api.builder.io/api/v1/image/assets/TEMP/7ce099fb64639b674ce791e47b56d7cf493e72d9?width=174",
+    image: "/images/img (2).png",
     status: "new",
     badge: "NEW ORDER",
     timeLeft: "48h to accept",
@@ -34,7 +35,7 @@ const messages: Message[] = [
     name: "Brooklyn Simmons",
     message: "Hey! It's so great to hear from you, I really loved the video you uploaded the other day! Did you...",
     time: "8:12pm",
-    image: "https://api.builder.io/api/v1/image/assets/TEMP/6b7e50459fb56507d6b60005d174495af5885e2b?width=174",
+    image: "/images/img (1).png",
     timeLeft: "15m left",
   },
   {
@@ -42,7 +43,7 @@ const messages: Message[] = [
     name: "Brooklyn Simmons",
     message: "Hey! It's so great to hear from you, I really loved the video you uploaded the other day! Did you...",
     time: "8:12pm",
-    image: "https://api.builder.io/api/v1/image/assets/TEMP/6d3ed1f3ee599b9e71b96c429512231332e64126?width=174",
+    image: "/images/img (3).png",
     timeLeft: "15m left",
   },
   {
@@ -50,7 +51,7 @@ const messages: Message[] = [
     name: "Brooklyn Simmons",
     message: "Hey! It's so great to hear from you, I really loved the video you uploaded the other day! Did you...",
     time: "8:12pm",
-    image: "https://api.builder.io/api/v1/image/assets/TEMP/6b7e50459fb56507d6b60005d174495af5885e2b?width=174",
+    image: "/images/img (4).png",
     timeLeft: "15m left",
   },
   {
@@ -58,7 +59,7 @@ const messages: Message[] = [
     name: "Brooklyn Simmons",
     message: "Hey! It's so great to hear from you, I really loved the video you uploaded the other day! Did you...",
     time: "8:12pm",
-    image: "https://api.builder.io/api/v1/image/assets/TEMP/6d3ed1f3ee599b9e71b96c429512231332e64126?width=174",
+    image: "/images/img (2).png",
     timeLeft: "15m left",
   },
   {
@@ -66,7 +67,7 @@ const messages: Message[] = [
     name: "Brooklyn Simmons",
     message: "Hey! It's so great to hear from you, I really loved the video you uploaded the other day! Did you...",
     time: "8:12pm",
-    image: "https://api.builder.io/api/v1/image/assets/TEMP/9458eeffbfe69abfc3d194e024d0ac971cbe4040?width=174",
+    image: "/images/img (1).png",
     status: "completed",
     timeLeft: "48h to Left",
   },
@@ -74,28 +75,33 @@ const messages: Message[] = [
 
 export default function Chats() {
   const router = useRouter();
+  const [role] = useState<string | null>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("selectedRole");
+    }
+    return null;
+  });
 
   const handleMessageClick = (msg: Message) => {
     if (msg.status === "new") {
       router.push(`/chats/new-order/${msg.id}`);
     }
   };
+  if (role === null && typeof window !== "undefined") {
+    return null;
+  }
+  const filteredMessages = messages.filter(msg => !(role === "user" && msg.badge === "NEW ORDER"));
 
   return (
     <div className="min-h-screen bg-[#F8F7F9] flex flex-col">
       <header className="w-full bg-linear-to-b from-[rgba(255,255,255,0.80)] to-[rgba(251,251,251,0.80)] backdrop-blur-[7.5px] border-b border-[#CDD5E1] shadow-[0_5px_12px_0_rgba(0,0,0,0.10)]">
         <div className="max-w-[640px] mx-auto px-4 sm:px-0 py-7 flex flex-col gap-3">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-start">
             <NavigateBack />
-            <h1 className="sm:text-lg text-[16px] font-bold italic text-[#141414] font-ubuntu">
+            <h1 className="sm:text-lg text-[16px] font-bold italic text-[#141414] text-center mx-auto font-ubuntu">
               WordzMessenger
             </h1>
-            <button onClick={() => router.push(`/explore-packages`)} className="flex items-center cursor-pointer sm:gap-2.5 gap-1 sm:px-3.5 px-2 py-1.5 bg-[#FF99C9] rounded-md">
-              <MessageSquare className="w-5 h-5 text-[#303A2B]" strokeWidth={1.33} />
-              <span className="text-base text-[#303A2B]">New Chat</span>
-            </button>
           </div>
-
           <div className="flex flex-col gap-2.5">
             <div className="flex items-center gap-1">
               <div className="flex-1 flex items-center gap-1.5 px-2.5 py-2 rounded-[18px] bg-[rgba(57,83,125,0.07)]">
@@ -115,7 +121,7 @@ export default function Chats() {
       <main className="flex-1 flex flex-col items-center px-4 py-2.5 pb-32">
         <div className="w-full max-w-[640px] mx-auto px-4 sm:px-0 flex flex-col gap-6">
           <div className="flex flex-col gap-5 pt-4">
-            {messages.map((msg) => (
+            {filteredMessages.map(msg => (
               <div
                 key={msg.id}
                 onClick={() => handleMessageClick(msg)}
@@ -144,9 +150,7 @@ export default function Chats() {
                     )}
                   </div>
 
-                  <p className="text-[11px] font-medium text-[#595959] line-clamp-2">
-                    {msg.message}
-                  </p>
+                  <p className="text-[11px] font-medium text-[#595959] line-clamp-2">{msg.message}</p>
 
                   <div className="flex items-center gap-1">
                     <span className="text-[10px] text-[#8C8C8C]">{msg.time}</span>

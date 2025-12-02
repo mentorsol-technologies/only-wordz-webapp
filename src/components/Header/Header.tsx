@@ -6,11 +6,24 @@ import { useState, useRef, useEffect } from "react";
 export function Header() {
     const [showSearch, setShowSearch] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         if (showSearch) {
             inputRef.current?.focus();
         }
     }, [showSearch]);
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (
+                containerRef.current &&
+                !containerRef.current.contains(event.target as Node)
+            ) {
+                setShowSearch(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     return (
         <header className="w-full bg-white border-b border-[#C1BDDB] shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
@@ -30,13 +43,13 @@ export function Header() {
                     <Image src={'/images/Logo.png'} width={121} height={36} alt='Logo' />
                 </div>
 
-                <div className="flex items-center gap-3 relative">
+                <div className="flex items-center gap-3 relative" ref={containerRef}>
                     {showSearch ? (
                         <input
                             ref={inputRef}
                             type="text"
                             placeholder="Search..."
-                            className="w-full px-4 py-2.5 rounded-lg bg-[#F3F3F5] border border-[rgba(193,189,219,0.5)] text-sm text-[#717182] focus:border-[#FF99C9] focus:outline-none"
+                            className="w-full px-4 py-3 rounded-lg bg-[#F3F3F5] border border-[rgba(193,189,219,0.5)] text-sm text-[#717182] focus:border-[#FF99C9] focus:outline-none"
                         />
                     ) : (
                         <button
