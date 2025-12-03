@@ -12,28 +12,42 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { register as registerApi } from '@/lib/auth';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
 
 const signUpSchema = z
   .object({
-    fullName: z.string().min(1, 'Full name is required').trim(),
-    email: z.string().min(1, 'Email is required').email('Invalid email address'),
+    full_name: z
+      .string()
+      .min(3, 'Full name must be at least 3 characters')
+      .regex(/^[A-Za-z ]+$/, 'Full name can only contain letters and spaces')
+      .trim(),
+    username: z
+      .string()
+      .min(3, 'User name must be at least 3 characters')
+      .regex(/^[A-Za-z ]+$/, 'User name can only contain letters and spaces')
+      .trim(),
+    email: z
+      .string()
+      .min(1, 'Email is required')
+      .email('Invalid email address'),
     password: z
       .string()
-      .min(1, 'Password is required')
-      .min(8, 'Password must be at least 8 characters'),
-    confirmPassword: z.string().min(1, 'Please confirm your password'),
+      .min(8, 'Password must be at least 8 characters')
+      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+      .regex(/[0-9]/, 'Password must contain at least one number')
+      .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
+    confirm_password: z.string().min(1, 'Please confirm your password'),
     rememberMe: z.boolean().optional(),
+    role: z.enum(['user', 'creator']),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.confirm_password, {
     message: "Passwords don't match",
-    path: ['confirmPassword'],
+    path: ['confirm_password'],
   });
 
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 export default function Register() {
-  const router = useRouter();
   const [role] = useState<'user' | 'creator'>(() => {
     if (typeof window !== 'undefined') {
       return (localStorage.getItem('selectedRole') as 'user' | 'creator') || 'user';
@@ -44,11 +58,13 @@ export default function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formValues, setFormValues] = useState<SignUpFormValues>({
-    fullName: '',
+    full_name: '',
+    username: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    confirm_password: '',
     rememberMe: false,
+    role,
   });
 
   const {
@@ -73,20 +89,15 @@ export default function Register() {
 
     try {
       const payload = {
-        fullName: data.fullName,
+        full_name: data.full_name,
+        username: data.username,
         email: data.email,
         password: data.password,
-        role,
+        confirm_password: data.confirm_password,
+        role: data.role,
       };
-
       const res = await registerApi(payload);
-
-      toast.success(res?.message || 'Account created successfully');
-      if (role === 'user') {
-        router.push('/discover');
-      } else {
-        router.push('/my-packages');
-      }
+      toast.success(res?.message || 'Account created. Activation email sent.');
     } catch (err: unknown) {
       console.error('Register error:', err);
       const message = err instanceof Error ? err.message : String(err);
@@ -116,15 +127,27 @@ export default function Register() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <CommonInput
-            name="fullName"
+            name="full_name"
             label="Full Name"
-            placeholder="John Doe"
+            placeholder="Enter Name"
             type="text"
             icon={<Image src={'/images/avatar.png'} width={20} height={20} alt="User Icon" />}
-            value={formValues.fullName}
-            onChange={handleChange('fullName')}
-            error={!!errors.fullName}
-            errorMessage={errors.fullName?.message}
+            value={formValues.full_name}
+            onChange={handleChange('full_name')}
+            error={!!errors.full_name}
+            errorMessage={errors.full_name?.message}
+          />
+
+          <CommonInput
+            name="username"
+            label="User Name"
+            placeholder="Enter UserName"
+            type="text"
+            icon={<Image src={'/images/avatar.png'} width={20} height={20} alt="User Icon" />}
+            value={formValues.username}
+            onChange={handleChange('username')}
+            error={!!errors.username}
+            errorMessage={errors.username?.message}
           />
 
           <CommonInput
@@ -142,6 +165,7 @@ export default function Register() {
           <CommonInput
             name="password"
             label="Password"
+            minLength={8}
             placeholder="Create a strong password"
             icon={<Image src={'/images/password.png'} width={21} height={21} alt="Lock Icon" />}
             value={formValues.password}
@@ -152,15 +176,16 @@ export default function Register() {
           />
 
           <CommonInput
-            name="confirmPassword"
+            name="confirm_password"
             label="Confirm Password"
+            minLength={8}
             placeholder="Confirm your password"
             icon={<Image src={'/images/password.png'} width={21} height={21} alt="Lock Icon" />}
-            value={formValues.confirmPassword}
-            onChange={handleChange('confirmPassword')}
+            value={formValues.confirm_password}
+            onChange={handleChange('confirm_password')}
             type="password"
-            error={!!errors.confirmPassword}
-            errorMessage={errors.confirmPassword?.message}
+            error={!!errors.confirm_password}
+            errorMessage={errors.confirm_password?.message}
           />
 
           <Button

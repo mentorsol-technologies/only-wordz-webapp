@@ -7,7 +7,9 @@ type LoginPayload = {
 };
 
 type RegisterPayload = {
-  fullName: string;
+  full_name: string;
+  confirm_password: string;
+  username: string;
   email: string;
   password: string;
   role?: string;
@@ -42,6 +44,39 @@ export async function register(payload: RegisterPayload) {
   if (!res.status || res.status >= 400)
     throw new Error(data?.message || "Registration failed");
 
+  return data;
+}
+export async function forgotPassword(email: string) {
+  const res = await api.post("/auth/password/forgot/", { email });
+  const data = res.data;
+  if (!res.status || res.status >= 400)
+    throw new Error(data?.message || "Request failed");
+  return data;
+}
+
+export async function resetPassword(
+  new_password: string,
+  confirm_password: string,
+  uid: string,
+  token: string
+) {
+  const res = await api.post("/auth/password/reset/", {
+    new_password,
+    confirm_password,
+    uid,
+    token,
+  });
+  const data = res.data;
+  if (!res.status || res.status >= 400)
+    throw new Error(data?.message || "Reset failed");
+  return data;
+}
+
+export async function verifyAccount(uid: string, token: string) {
+  const res = await api.post("/auth/email/confirm/", { uid, token });
+  const data = res.data;
+  if (!res.status || res.status >= 400)
+    throw new Error(data?.message || "Verification failed");
   return data;
 }
 export function getToken(): string | null {

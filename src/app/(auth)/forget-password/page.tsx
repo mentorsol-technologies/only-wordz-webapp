@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import Button from '@/components/Button/Button';
 import CommonInput from '@/components/CommonInput/Input';
 import NavigateBack from '@/components/NavigateBack';
+import { forgotPassword } from '@/lib/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 const forgotPasswordSchema = z.object({
@@ -32,21 +35,29 @@ export default function ForgotPasswordPage() {
         resolver: zodResolver(forgotPasswordSchema),
         defaultValues: formValues,
     });
-    const handleChange = (field: keyof ForgotPasswordFormValues) => (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setFormValues(prev => ({ ...prev, [field]: value }));
-        setValue(field, value, { shouldValidate: true });
-    };
-    const onSubmit = (data: ForgotPasswordFormValues) => {
-        setIsSubmitting(true);
-        setTimeout(() => {
-            setIsSubmitting(false);
+
+    const handleChange =
+        (field: keyof ForgotPasswordFormValues) =>
+            (e: React.ChangeEvent<HTMLInputElement>) => {
+                const value = e.target.value;
+                setFormValues(prev => ({ ...prev, [field]: value }));
+                setValue(field, value, { shouldValidate: true });
+            };
+
+    const onSubmit = async (data: ForgotPasswordFormValues) => {
+        try {
+            setIsSubmitting(true);
+            const response = await forgotPassword(data.email);
+            console.log("Forgot Password Response:", response);
             setEmailSent(data.email);
-            reset(); // Clear form after submission
-        }, 1500);
+            reset();
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error.message || "Something went wrong");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
-
-
 
     if (emailSent) {
         return (
@@ -87,10 +98,15 @@ export default function ForgotPasswordPage() {
                         </Button>
 
                         <Button
-                            onClick={() => {
-                                setIsSubmitting(true);
-                                // Simulate resend
-                                setTimeout(() => setIsSubmitting(false), 1000);
+                            onClick={async () => {
+                                try {
+                                    setIsSubmitting(true);
+                                    await forgotPassword(emailSent); 
+                                } catch (e) {
+                                    console.error(e);
+                                } finally {
+                                    setIsSubmitting(false);
+                                }
                             }}
                             size='lg'
                             disabled={isSubmitting}
@@ -160,7 +176,6 @@ export default function ForgotPasswordPage() {
                     </div>
                 </form>
             </div>
-
         </div>
     );
 }
