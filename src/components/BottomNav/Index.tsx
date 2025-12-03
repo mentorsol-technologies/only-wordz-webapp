@@ -1,17 +1,28 @@
-import { User, MessageCircle, Settings, Grid2x2 } from "lucide-react";
+import { User, MessageCircle, Grid2x2, Search } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
-const navItems = [
-    { id: "profile", label: "Profile", icon: User, path: "/profile" },
+const navItemsDefault = [
+    { id: "discover", label: "Discover", icon: Search, path: "/discover" },
     { id: "chats", label: "Chats", icon: MessageCircle, path: "/chats" },
     { id: "packages", label: "My Packages", icon: Grid2x2, path: "/my-packages" },
-    { id: "explore", label: "Explore Packages", icon: Grid2x2, path: "/explore-packages" },
-    { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
+    { id: "profile", label: "Profile", icon: User, path: "/profile" },
 ];
 
 export function BottomNav() {
     const pathname = usePathname();
+    const [role] = useState<'user' | 'creator'>(() => {
+        if (typeof window !== 'undefined') {
+            return (localStorage.getItem("selectedRole") as 'user' | 'creator') || 'user';
+        }
+        return 'user';
+    });
+    const navItems = navItemsDefault.filter(item => {
+        if (role === 'user' && item.id === 'explore') return false;
+        if (role === 'creator' && item.id === 'discover') return false;
+        return true;
+    });
 
     return (
         <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#C1BDDB] shadow-[0_-2px_8px_0_rgba(0,0,0,0.04)] z-50">
@@ -34,8 +45,8 @@ export function BottomNav() {
                                     strokeWidth={2}
                                 />
                                 <span
-                                        className={`sm:text-xs text-[10px] whitespace-nowrap ${isActive ? "text-[#FF99C9]" : "text-[#A2C7E5]"
-                                        }`}
+                                    className={`sm:text-xs text-[10px] whitespace-nowrap ${isActive ? "text-[#FF99C9]" : "text-[#A2C7E5]"}`
+                                    }
                                 >
                                     {item.label}
                                 </span>

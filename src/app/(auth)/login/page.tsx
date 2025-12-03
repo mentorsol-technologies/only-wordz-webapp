@@ -61,7 +61,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
-      <div className="text-center mb-8">
+      <div className="text-center mb-4 2xl:mb-8">
         <div className="flex justify-center mb-1">
           <Image src={'/images/Logo.png'} width={197} height={58} alt='Logo' />
         </div>
@@ -127,69 +127,18 @@ export default function LoginPage() {
             {isSubmitting ? 'Signing In...' : 'Login'} <ArrowRight size={16} className='text-[#212121]' />
           </Button>
 
-
-          <div className="relative mt-3.5">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center">
-              <span className="px-3 bg-white font-sans font-normal text-[16px] text-[#6A7282]">
-                or continue with
-              </span>
-            </div>
-          </div>
-
-          {/* Social Login */}
-          <div className="grid grid-cols-2 gap-3 pt-2.5">
-            <Button
-              type="button"
-              size='lg'
-              className="flex items-center justify-center gap-2 py-2.5 px-4 border border-gray-300 rounded-lg text-[#0A0A0A] bg-white hover:bg-gray-50 text-sm font-medium"
-            >
-              <Image src={'/images/google.png'} width={16} height={16} alt='Google' />
-              Google
-            </Button>
-            <Button
-              type="button"
-              size='lg'
-              className="flex items-center justify-center gap-2 py-2.5 px-4 border border-gray-300 rounded-lg text-[#0A0A0A] bg-white hover:bg-gray-50 text-sm font-medium"
-            >
-              <Image src={'/images/apple.png'} width={16} height={16} alt='Apple' />
-              Apple
-            </Button>
-          </div>
         </form>
 
-        {/* Sign Up Link */}
         <div className="mt-6 text-center font-sans font-normal max-[321px]:text-[14px] text-[16px] text-[#4A5565]">
           Don&apos;t have an account?{' '}
           <Link
-            href="/register"
+            href="/role-selection"
             className="font-sans font-normal text-[#E60076] text-center hover:underline"
           >
             {'  '} Sign up
           </Link>
         </div>
       </div>
-      <p className="mt-5 text-center font-sans font-normal max-[376px]:text-[14px] text-[16px] text-[#6A7282]">
-        By continuing, you agree to our{' '}
-        <Link
-          href=""
-          className="font-normal text-[#FF99C9] underline transition-all duration-300 ease-in-out"
-        >
-          Terms of Service
-        </Link>
-        {' '}and{' '}
-        <span className="max-[376px]:hidden">
-          <br />
-        </span>
-        <Link
-          href=""
-          className="font-normal text-[#FF99C9] underline transition-all duration-300 ease-in-out"
-        >
-          Privacy Policy
-        </Link>
-      </p>
     </div>
   );
 }
