@@ -1,7 +1,7 @@
 'use client'
 import { BottomNav } from "@/components/BottomNav/Index";
 import NavigateBack from "@/components/NavigateBack";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -85,6 +85,8 @@ export default function Chats() {
   const handleMessageClick = (msg: Message) => {
     if (msg.status === "new") {
       router.push(`/chats/new-order/${msg.id}`);
+    } else {
+      router.push(`/new-chat`);
     }
   };
   if (role === null && typeof window !== "undefined") {
@@ -111,7 +113,6 @@ export default function Chats() {
                   placeholder="Search"
                   className="flex-1 bg-transparent text-sm text-[#8F9FB8] placeholder-[#8F9FB8] outline-none border-none"
                 />
-                <SlidersHorizontal className="w-[18px] h-[18px] text-[#8F9FB8]" strokeWidth={1.5} />
               </div>
             </div>
           </div>
@@ -125,7 +126,7 @@ export default function Chats() {
               <div
                 key={msg.id}
                 onClick={() => handleMessageClick(msg)}
-                className={`flex items-center gap-4 bg-white rounded-lg shadow-[0_2px_8px_0_rgba(0,0,0,0.12)] overflow-hidden 
+                className={`flex items-center gap-4 bg-white cursor-pointer rounded-lg shadow-[0_2px_8px_0_rgba(0,0,0,0.12)] overflow-hidden 
                   ${msg.status === "new" ? "border-2 border-[#FF99C9] cursor-pointer" : ""} 
                   ${msg.status === "completed" ? "opacity-60" : ""}`}
               >
