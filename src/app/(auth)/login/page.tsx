@@ -47,6 +47,7 @@ export default function LoginPage() {
 
   const onSubmit = (data: LoginFormValues) => {
     console.log('Login data:', data);
+    localStorage.setItem("selectedRole", 'creator');
     router.push('/my-packages');
   };
 
