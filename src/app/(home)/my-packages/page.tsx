@@ -129,10 +129,6 @@ export default function Index() {
                 title={pkg.title}
                 description={pkg.description}
                 duration={pkg.duration}
-                price={pkg.price}
-                active={pkg.active}
-                earned={pkg.earned}
-                entitlements={pkg.entitlements}
               />
             ))}
           </div>
